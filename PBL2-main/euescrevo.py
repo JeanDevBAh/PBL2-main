@@ -94,16 +94,26 @@ def limparpeca(matriz, peca, x, y):
 def gerar_nova_peca():
     return random.choice(peças)
 
+def KABUM(matriz, peca, x, y):
+    if peca == [['⬛','⬛','⬛'], ['⬛','💣','⬛'],['⬛','⬛','⬛']]:
+        if not Pode_mover(matriz, peca, x, y):
+            for i in range(len(peca)):
+                for j in range(len(peca[i])):
+                    if 0 <= x + i < len(matriz) and 0 <= y + j < len(matriz[0]):
+                        if matriz[x+i][y+j] != '⬛':
+                            matriz[x+i][y+j] = '⬛'
+            return True    
+    return False
 peças = [
     
     [['🟩', '🟩', '🟩', '🟩']], # I
-    #[['🟩', '🟩'], ['🟩', '🟩']], # O
-    #[['🟩','🟩', '🟩'], ['⬛', '🟩', '⬛']], # T
-    #[['🟩', '🟩', '⬛'], ['⬛', '🟩', '🟩']], # S
-    #[['⬛', '🟩','🟩'], ['🟩', '🟩', '⬛']], # Z
-    #[['⬛', '⬛', '🟩'], ['🟩', '🟩', '🟩']], # L
-    #[['🟩', '⬛', '⬛'], ['🟩', '🟩', '🟩']],  # J
-    #[['⬛','⬛','⬛'], ['⬛','💣','⬛'],['⬛','⬛','⬛']]
+    [['🟩', '🟩'], ['🟩', '🟩']], # O
+    [['🟩','🟩', '🟩'], ['⬛', '🟩', '⬛']], 
+    [['🟩', '🟩', '⬛'], ['⬛', '🟩', '🟩']], 
+    [['⬛', '🟩','🟩'], ['🟩', '🟩', '⬛']], 
+    [['⬛', '⬛', '🟩'], ['🟩', '🟩', '🟩']], 
+    [['🟩', '⬛', '⬛'], ['🟩', '🟩', '🟩']],  
+    [['⬛','⬛','⬛'], ['⬛','💣','⬛'],['⬛','⬛','⬛']]
 ]
 
 
@@ -137,12 +147,16 @@ while verifica == True:
          x = mover_baixo(matriz, peca, x, y)
 
     else:
-        
-        inserirpeca(matriz, peca, x, y)
-        peca = gerar_nova_peca()
-        x, y = 0, random.randint(2,6) 
-        pontuação += remove_linha(matriz) 
-        remove_linha(matriz)
+        if KABUM(matriz, peca, x, y):  
+            peca = gerar_nova_peca()   
+            x, y = 0, random.randint(2, 6)
+
+        else:    
+            inserirpeca(matriz, peca, x, y)
+            peca = gerar_nova_peca()
+            x, y = 0, random.randint(2,6) 
+            pontuação += remove_linha(matriz) 
+            remove_linha(matriz)
         
         if Pode_mover(matriz, peca, x, y):  
             print("Game Over!")
